@@ -1,0 +1,150 @@
+// Variables
+$pg-width: 8.5in;
+$pg-height: 11in;
+$pg-sep: 10px;
+$margin-horiz: 1in;
+$margin-vert: 0.8in;
+$base-font-size: 14px;
+$bg-color: #444;
+$col-rule-color: #ddd;
+$col-gap: 0.5in;
+$numbering-color: #888;
+$fig-padding: 20px;
+$tab-stop: 0.5in;
+
+body {
+  background-color: $bg-color;
+  font-size: $base-font-size;
+}
+
+// Layout
+#document {
+  width: $pg-width;
+  margin: 0 auto;
+  background: white;
+
+  img {
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+  }
+
+  .page {
+    height: $pg-height;
+    border-bottom: $pg-sep solid $bg-color;
+    padding: $margin-vert $margin-horiz;
+    position: relative;
+  }
+
+  .twocol {
+    column-count: 2;
+    column-rule: 1px solid $col-rule-color;
+    column-gap: $col-gap;
+    column-fill: auto;
+    overflow: visible;
+  }
+
+  .spancols {
+    column-span: all;
+    margin: $fig-padding 0;
+  }
+
+  figure {
+    margin: $fig-padding 0;
+    img {
+      width: 100%;
+    }
+    figcaption {
+      margin: 0 $tab-stop;
+      margin-top: 1rem;
+      text-align: center;
+      &:before {
+        font-weight: 600;
+      }
+    }
+  }
+
+  ul, ol {
+    padding-left: 0.25in;
+  }
+}
+
+code {
+  background-color: transparent;
+}
+
+.todo {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  border-color: #faebcc;
+  padding: 5px 10px;
+  margin: 10px 0;
+
+  &:before {
+    content: "TODO: ";
+    font-weight: bold;
+  }
+}
+
+// CSS counters for auto numbering
+body {
+  counter-reset: section subsection figure table page;
+}
+
+.page:after {
+  counter-increment: page;
+  content: counter(page);
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  bottom: 0.5in;
+}
+
+h3 {
+  counter-reset: subsection;
+
+  &:before {
+    counter-increment: section;
+    // content: counter(section, upper-roman) ". ";
+    width: $tab-stop;
+    display: inline-block;
+  }
+}
+h4 {
+
+  &:before {
+    counter-increment: subsection;
+    // content: counter(subsection, lower-roman) ". ";
+    width: $tab-stop;
+    display: inline-block;
+  }
+}
+
+figcaption:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+}
+
+caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+}
+
+// print styles
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+
+  #document .page {
+    border-bottom: $pg-sep solid transparent;
+    overflow: hidden;
+  }
+
+  h3:before, h4:before {
+    color: $numbering-color;
+  }
+}

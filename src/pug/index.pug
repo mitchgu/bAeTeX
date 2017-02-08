@@ -1,0 +1,15 @@
+extends ../_layouts/print
+
+block title
+  | bAeTeX
+
+block content
+  .page
+    :markdown-it
+      # Welcome to bAeTeX
+      ## Header 2
+      ### Header 3
+      #### Header 4
+      ##### Header 5
+
+    p= lorem
